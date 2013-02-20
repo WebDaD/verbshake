@@ -7,4 +7,9 @@
         android:id="@+id/menu_sync"
         android:orderInCategory="100"
         android:title="@string/menu_sync"/>	
+        
+    <item
+        android:id="@+id/menu_share"
+        android:orderInCategory="100"
+        android:title="@string/menu_share"/>	
 </menu>

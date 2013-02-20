@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +27,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 	public TextView txt_m;
 	private ProgressDialog pd;
 	
+	private Boolean sync_onstart;
+	private String language;
+	
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
 	private static final int SHAKE_THRESHOLD = 800;
@@ -32,6 +38,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 	final float alpha = (float) 0.8;
 	
 	private Vibrator vib;
+	
+	
 
 	//IN
 	
@@ -40,8 +48,15 @@ public class MainActivity extends Activity implements SensorEventListener{
 		Log.i("App", "Starting...");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		sync_onstart = sharedPref.getBoolean("pref_sync_onstart",sharedPref.getBoolean("pref_sync_onstart_default", true));
+		language = sharedPref.getString("pref_language",sharedPref.getString("pref_language_default", "de"));
 		
 		db = new DataBaseHelper(getApplicationContext());
+		
+		
+		
 		Log.i("App", "Create DB if needed...");
 		db.CreateMe();
 		txt_m = (TextView)findViewById(R.id.txt_mixed);
@@ -51,6 +66,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 		    mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		  }
 		vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+		
+		
 		Log.i("App", "Ready!");
 	}
 	
@@ -59,6 +76,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 	@Override
 	protected void onStart(){
 		super.onStart();
+		if(sync_onstart){
+			sync();
+		}
 	}
 	
 	//started(visible)
@@ -111,21 +131,35 @@ public class MainActivity extends Activity implements SensorEventListener{
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	        case R.id.menu_settings:
-	        	/*try
+	        	try
 	        	{
-	        	Intent in = new Intent(MainActivity.this, preferences.class);
+	        	Intent in = new Intent(MainActivity.this, SettingsActivity.class);
 	        	MainActivity.this.startActivity(in);
 	        	}
 	        	catch(Exception e)
 	        	{
 	        	Log.e("Menu", e.getMessage());
-	        	}*/
+	        	}
 	        	
 	            return true;
 	        case R.id.menu_sync:
 	        	try
 	        	{
 	        		sync();
+	        	}
+	        	catch(Exception e)
+	        	{
+	        		Log.e("Menu", e.getMessage());
+	        	}
+	            return true;
+	        case R.id.menu_share:
+	        	try
+	        	{
+	        		Intent sendIntent = new Intent();
+		        	sendIntent.setAction(Intent.ACTION_SEND);
+		        	sendIntent.putExtra(Intent.EXTRA_TEXT, txt_m.getText()+"\n-MixUp presented by VerbShaker");
+		        	sendIntent.setType("text/plain");
+		        	startActivity(sendIntent);
 	        	}
 	        	catch(Exception e)
 	        	{
@@ -143,6 +177,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	
 	public void getMix(){
 		txt_m.setText(db.getProVerb());
+		vib.vibrate(100);
 	}
 	
 	private void sync(){
@@ -203,7 +238,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	      if (speed > SHAKE_THRESHOLD) {
 	        Log.d("sensor", "shake detected w/ speed: " + speed);
 	        getMix();
-	        vib.vibrate(300);
+	        
 	      }
 	      last_x = x;
 	      last_y = y;
