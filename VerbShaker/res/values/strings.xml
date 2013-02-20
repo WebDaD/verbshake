@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">VerbShaker</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="starter">Welcome! Shake or press button for a mixed ProVerb!</string>
+    <string name="btn_getMix_Text">Mix It!</string>
+    <string name="menu_sync">Sync Now</string>
 
 </resources>
