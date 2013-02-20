@@ -1,7 +1,9 @@
 package webdad.apps.verbshaker;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,7 +26,6 @@ public class MainActivity extends Activity implements SensorEventListener{
 	
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
-	private int sensor_changes;
 	private static final int SHAKE_THRESHOLD = 800;
 	private long lastUpdate=0;
 	float x, y, z, last_x=0.0f, last_y=0.0f, last_z = 0.0f, gravity_x=0.0f, gravity_y=0.0f, gravity_z=0.0f;
@@ -39,15 +40,16 @@ public class MainActivity extends Activity implements SensorEventListener{
 		Log.i("App", "Starting...");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		db = new DataBaseHelper(getApplicationContext());
 		Log.i("App", "Create DB if needed...");
 		db.CreateMe();
 		txt_m = (TextView)findViewById(R.id.txt_mixed);
-		mSensorManager = (SensorManager) getSystemService(getApplicationContext().SENSOR_SERVICE);
+		getApplicationContext();
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
 		    mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		  }
-		sensor_changes=0;
 		vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 		Log.i("App", "Ready!");
 	}
@@ -159,6 +161,7 @@ public class MainActivity extends Activity implements SensorEventListener{
             handler.sendEmptyMessage(0);
         }
 
+		@SuppressLint("HandlerLeak")
 		private Handler handler = new Handler() {
 
             @Override
