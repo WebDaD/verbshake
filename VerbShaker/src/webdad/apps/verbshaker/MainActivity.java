@@ -16,6 +16,7 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -173,11 +174,12 @@ public class MainActivity extends Activity implements SensorEventListener{
 	
 	public void btn_getNewMix_onclick(View view) {
 	     getMix();
+	     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 	 }
 	
 	public void getMix(){
 		txt_m.setText(db.getProVerb());
-		vib.vibrate(100);
+		vib.vibrate(300);
 	}
 	
 	private void sync(){
