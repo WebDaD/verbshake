@@ -49,6 +49,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		Log.i("App", "Starting...");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		sync_onstart = sharedPref.getBoolean("pref_sync_onstart",sharedPref.getBoolean("pref_sync_onstart_default", true));
@@ -60,6 +61,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		
 		Log.i("App", "Create DB if needed...");
 		db.CreateMe();
+		
 		txt_m = (TextView)findViewById(R.id.txt_mixed);
 		getApplicationContext();
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);

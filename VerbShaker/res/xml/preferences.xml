@@ -13,6 +13,7 @@
         android:entries="@array/pref_language_entries"
         android:entryValues="@array/pref_language_values"
         android:defaultValue="@string/pref_language_default" />
+
     
 
 </PreferenceScreen>
