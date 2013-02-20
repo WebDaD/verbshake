@@ -70,6 +70,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 		  }
 		vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 		
+		if(sync_onstart){
+			sync();
+		}
 		
 		Log.i("App", "Ready!");
 	}
@@ -79,9 +82,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	@Override
 	protected void onStart(){
 		super.onStart();
-		if(sync_onstart){
-			sync();
-		}
+		
 	}
 	
 	//started(visible)
