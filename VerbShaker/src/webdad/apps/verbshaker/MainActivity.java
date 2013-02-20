@@ -158,7 +158,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 	        	{
 	        		Intent sendIntent = new Intent();
 		        	sendIntent.setAction(Intent.ACTION_SEND);
-		        	sendIntent.putExtra(Intent.EXTRA_TEXT, txt_m.getText()+"\n-MixUp presented by VerbShaker");
+		        	sendIntent.putExtra(Intent.EXTRA_TEXT, txt_m.getText()+"\n\n\nMixUp presented by VerbShaker\nAn App brought to you by <a href=\"http://www.webdad.eu\">WebDaD.eu</a>");
+		        	sendIntent.putExtra(Intent.EXTRA_SUBJECT, "VerbShaker Mix!" );
 		        	sendIntent.setType("text/plain");
 		        	startActivity(sendIntent);
 	        	}
@@ -179,7 +180,6 @@ public class MainActivity extends Activity implements SensorEventListener{
 	
 	public void getMix(){
 		txt_m.setText(db.getProVerb());
-		vib.vibrate(300);
 	}
 	
 	private void sync(){
@@ -240,7 +240,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	      if (speed > SHAKE_THRESHOLD) {
 	        Log.d("sensor", "shake detected w/ speed: " + speed);
 	        getMix();
-	        
+	        vib.vibrate(300);
 	      }
 	      last_x = x;
 	      last_y = y;
