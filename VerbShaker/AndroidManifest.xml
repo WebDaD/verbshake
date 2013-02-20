@@ -32,7 +32,7 @@
         </activity>
         <activity
             android:name="webdad.apps.verbshaker.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="Einstellungen"
             android:parentActivityName="webdad.apps.verbshaker.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
