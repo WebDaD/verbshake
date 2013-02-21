@@ -80,29 +80,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public Boolean Sync(){
-		Boolean ok = true;
 		SQLiteDatabase d = this.getWritableDatabase();
-
-		
 
 		   Log.i("Sync", "Getting HTTP");
 		   HttpClient client = new DefaultHttpClient();
-		   HttpGet request = new HttpGet("http://verbshaker.webdad.eu/sync.php");
+		   HttpGet request = new HttpGet("http://verbshaker.webdad.eu/sync.php?t="+DICTIONARY_TABLE_NAME);
 		   HttpResponse response = null;
 			try {
 				response = client.execute(request);
 			} catch (ClientProtocolException e) {
 				Log.e("Sync","CPE "+e.getMessage());
+				return false;
 			} catch (IOException e) {
 				Log.e("Sync","IOE "+e.getMessage());
+				return false;
 			}
 		   InputStream in = null;
 			try {
 				in = response.getEntity().getContent();
 			} catch (IllegalStateException e) {
 				Log.e("Sync","ISE "+e.getMessage());
+				return false;
 			} catch (IOException e) {
 				Log.e("Sync","IOE "+e.getMessage());
+				return false;
 			}
 			InputStreamReader inputStreamReader = new InputStreamReader(in);
 		    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -121,10 +122,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		    }
 		    catch(Exception e){
 		    	Log.e("Sync",e.getMessage());
+		    	return false;
 		    }
 		d.close();
 		Log.i("Sync", "Sync Complete");
-		return ok;
+		return true;
 	}
 	
 	public String getProVerb(){
