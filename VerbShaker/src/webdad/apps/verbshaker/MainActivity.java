@@ -1,11 +1,14 @@
 package webdad.apps.verbshaker;
 
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+@SuppressLint("HandlerLeak")
 public class MainActivity extends Activity implements SensorEventListener{
 
 	public DataBaseHelper db;
@@ -53,11 +57,12 @@ public class MainActivity extends Activity implements SensorEventListener{
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		sync_onstart = sharedPref.getBoolean("pref_sync_onstart",sharedPref.getBoolean("pref_sync_onstart_default", true));
-		language = sharedPref.getString("pref_language",sharedPref.getString("pref_language_default", "de"));
+		language = sharedPref.getString("pref_language",sharedPref.getString("pref_language_default", getResources().getConfiguration().locale.getDisplayName()));
+		setLanguage(language);
 		
 		db = new DataBaseHelper(getApplicationContext());
 		
-		
+
 		
 		Log.i("App", "Create DB if needed...");
 		db.CreateMe();
@@ -180,6 +185,14 @@ public class MainActivity extends Activity implements SensorEventListener{
 	     getMix();
 	     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 	 }
+	
+	private void setLanguage(String lang){
+		Locale locale = new Locale(lang);
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+	}
 	
 	public void getMix(){
 		txt_m.setText(db.getProVerb());

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">VerbShaker</string>
+    <string name="starter">Welcome.\nPress Shake or shake your Phone for new Kombiantions</string>
+    <string name="btn_getMix_Text">Shake!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_sync">Sync Now</string>
+    <string name="menu_share">Share</string>
+    
+    <string name="pref_sync_onstart_title">Sync on StartUp</string>
+    <string name="pref_sync_onstart_summ">Sync with Server on Startup of App</string>
+    <string name="pref_sync_onstart_default">true</string>
+    
+    <string name="pref_language_title">Language</string>
+    <string-array name="pref_language_entries">
+        <item>German</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="pref_language_values">
+        <item>de</item>
+        <item>en</item>
+    </string-array>
+    <string name="pref_language_default">en</string>
+    
+	<string name="db_table">verbs_en</string>
+    
+    
+
+</resources>
