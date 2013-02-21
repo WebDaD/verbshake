@@ -11,11 +11,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract.Contacts.Data;
 import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -66,9 +69,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		    String line;
 		    while ((line = bufferedReader.readLine()) != null) {
+		    	
 		        String[] tmp = line.split("\\|");
-		        db.execSQL("INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')"); 
+		        ContentValues c = new ContentValues();
+		        c.put("front", tmp[0]);
+		        c.put("back", tmp[1]);
+		        try{
+		        db.insert(DICTIONARY_TABLE_NAME, null, c);
 		        Log.i("DB","INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
+		        }
+		        catch(SQLException se){
+		        	Log.e("DB",se.getMessage());
+		        }
 		    }
 		    bufferedReader.close();
 		    inputStreamReader.close();
@@ -113,7 +125,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		    try{
 		    while ((line = bufferedReader.readLine()) != null) {
 		        String[] tmp = line.split("\\|");
-		        d.execSQL("INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')"); 
+		        ContentValues c = new ContentValues();
+		        c.put("front", tmp[0]);
+		        c.put("back", tmp[1]);
+		        try{
+		        d.insert(DICTIONARY_TABLE_NAME, null, c);
+		        Log.i("DB","INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
+		        }
+		        catch(SQLException se){
+		        	Log.e("DB",se.getMessage());
+		        }
 		        Log.i("Sync","INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
 		    }
 		    bufferedReader.close();
