@@ -37,12 +37,14 @@ public class MainActivity extends Activity implements SensorEventListener{
 	
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
+	private Boolean sensor_ok;
 	private static final int SHAKE_THRESHOLD = 800;
 	private long lastUpdate=0;
 	float x, y, z, last_x=0.0f, last_y=0.0f, last_z = 0.0f, gravity_x=0.0f, gravity_y=0.0f, gravity_z=0.0f;
 	final float alpha = (float) 0.8;
 	
 	private Vibrator vib;
+	private Boolean vib_ok;
 	
 	
 
@@ -72,9 +74,18 @@ public class MainActivity extends Activity implements SensorEventListener{
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
 		    mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		    sensor_ok=true;
 		  }
+		else {
+			sensor_ok=false;
+		}
+		try{
 		vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-		
+		}
+		catch(Exception e){
+			vib=null;
+			vib_ok=false;
+		}
 		if(sync_onstart){
 			sync();
 		}
@@ -95,7 +106,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	@Override
 	protected void onResume(){
 		super.onResume();
-		 mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		if(sensor_ok){ mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);}
 	}
 	
 	//resumed (visible)
@@ -103,7 +114,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	@Override
 	protected void onPause(){
 		super.onPause();
-		mSensorManager.unregisterListener(this);
+		if(sensor_ok){mSensorManager.unregisterListener(this);}
 	}
 	
 	//paused (maybe visible)
@@ -256,7 +267,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	      if (speed > SHAKE_THRESHOLD) {
 	        Log.d("sensor", "shake detected w/ speed: " + speed);
 	        getMix();
-	        vib.vibrate(300);
+	       if(vib_ok){ vib.vibrate(300);}
 	      }
 	      last_x = x;
 	      last_y = y;
