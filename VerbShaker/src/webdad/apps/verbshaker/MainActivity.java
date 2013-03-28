@@ -79,13 +79,17 @@ public class MainActivity extends Activity implements SensorEventListener{
 		else {
 			sensor_ok=false;
 		}
-		try{
+		
 		vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-		}
-		catch(Exception e){
-			vib=null;
+		if (vib != null){
+		    vib_ok=true;
+		  }
+		else {
 			vib_ok=false;
 		}
+		
+			
+
 		if(sync_onstart){
 			sync();
 		}
@@ -241,38 +245,39 @@ public class MainActivity extends Activity implements SensorEventListener{
 	}
 
 	public void onSensorChanged(SensorEvent event) {
-		Log.i("Sensor",event.toString());
-
-		long curTime = System.currentTimeMillis();
-	    // only allow one update every 100ms.
-	    if ((curTime - lastUpdate) > 100) {
-	      long diffTime = (curTime - lastUpdate);
-	      lastUpdate = curTime;
-
-	      
-
-	      // Isolate the force of gravity with the low-pass filter.
-	      gravity_x = alpha * gravity_x + (1 - alpha) * event.values[0];
-	      gravity_y = alpha * gravity_y + (1 - alpha) * event.values[1];
-	      gravity_z = alpha * gravity_z + (1 - alpha) * event.values[2];
-
-	      // Remove the gravity contribution with the high-pass filter.
-	      x = event.values[0] - gravity_x;
-	      y = event.values[1] - gravity_y;
-	      z = event.values[2] - gravity_z;
-
-
-	      float speed = Math.abs(x+y+z - (last_x + last_y + last_z)) / diffTime * 10000;
-
-	      if (speed > SHAKE_THRESHOLD) {
-	        Log.d("sensor", "shake detected w/ speed: " + speed);
-	        getMix();
-	       if(vib_ok){ vib.vibrate(300);}
-	      }
-	      last_x = x;
-	      last_y = y;
-	      last_z = z;
-	    }
-		
+		if(sensor_ok){
+			Log.i("Sensor",event.toString());
+	
+			long curTime = System.currentTimeMillis();
+		    // only allow one update every 100ms.
+		    if ((curTime - lastUpdate) > 100) {
+		      long diffTime = (curTime - lastUpdate);
+		      lastUpdate = curTime;
+	
+		      
+	
+		      // Isolate the force of gravity with the low-pass filter.
+		      gravity_x = alpha * gravity_x + (1 - alpha) * event.values[0];
+		      gravity_y = alpha * gravity_y + (1 - alpha) * event.values[1];
+		      gravity_z = alpha * gravity_z + (1 - alpha) * event.values[2];
+	
+		      // Remove the gravity contribution with the high-pass filter.
+		      x = event.values[0] - gravity_x;
+		      y = event.values[1] - gravity_y;
+		      z = event.values[2] - gravity_z;
+	
+	
+		      float speed = Math.abs(x+y+z - (last_x + last_y + last_z)) / diffTime * 10000;
+	
+		      if (speed > SHAKE_THRESHOLD) {
+		        Log.d("sensor", "shake detected w/ speed: " + speed);
+		        getMix();
+		       if(vib_ok){ vib.vibrate(300);}
+		      }
+		      last_x = x;
+		      last_y = y;
+		      last_z = z;
+		    }
+		}
 	}
 }
