@@ -23,7 +23,8 @@ import android.util.Log;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
 	private static final int DATABASE_VERSION = 1;
-    private static String DICTIONARY_TABLE_NAME = "verbs_de";
+    private static String TABLE_NAME_DE = "verbs_de";
+    private static String TABLE_NAME_EN = "verbs_en";
 	private static final String DATABASE_NAME = "proverbs";
 
 	private Context myContext;
@@ -31,14 +32,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         myContext = context;
-        DICTIONARY_TABLE_NAME = context.getResources().getString(R.string.db_table);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
     	Log.i("DB","Database is going to be created.");
-        db.execSQL("CREATE TABLE "+DICTIONARY_TABLE_NAME+" (id INT auto_increment, front TEXT, back TEXT)"); 
-        initialInsert(db);
+        db.execSQL("CREATE TABLE "+TABLE_NAME_DE+" (id INT auto_increment, front TEXT, back TEXT)"); 
+        db.execSQL("CREATE TABLE "+TABLE_NAME_EN+" (id INT auto_increment, front TEXT, back TEXT)"); 
+        AssetManager mngr = myContext.getAssets();
+        initialInsert(db, TABLE_NAME_DE, mngr);
+        initialInsert(db, TABLE_NAME_EN, mngr);
+        //mngr.close();
     }
 
 	@Override
@@ -58,11 +62,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		}
 	}
 	
-	public void initialInsert(SQLiteDatabase db){
+	public void initialInsert(SQLiteDatabase db, String table, AssetManager mngr){
 		Log.i("DB","Inserting initial Content");
-		AssetManager mngr = myContext.getAssets();
+		
 	    try {
-			InputStream is = mngr.open(DICTIONARY_TABLE_NAME+".csv");
+			InputStream is = mngr.open(table+".csv");
 			// foreach line split it at | and then insert it
 			InputStreamReader inputStreamReader = new InputStreamReader(is);
 		    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -74,8 +78,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		        c.put("front", tmp[0]);
 		        c.put("back", tmp[1]);
 		        try{
-		        db.insert(DICTIONARY_TABLE_NAME, null, c);
-		        Log.i("DB","INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
+		        db.insert(table, null, c);
+		        Log.i("DB","INSERT INTO "+table+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
 		        }
 		        catch(SQLException se){
 		        	Log.e("DB",se.getMessage());
@@ -84,18 +88,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		    bufferedReader.close();
 		    inputStreamReader.close();
 		    is.close();
-		    mngr.close();
 		} catch (IOException e) {
-			Log.e("DB","Could not open "+DICTIONARY_TABLE_NAME+".csv");
+			Log.e("DB","Could not open "+table+".csv");
 		}			
 	}
 	
-	public Boolean Sync(){
+	private Boolean Sync(String table){
 		SQLiteDatabase d = this.getWritableDatabase();
 
 		   Log.i("Sync", "Getting HTTP");
 		   HttpClient client = new DefaultHttpClient();
-		   HttpGet request = new HttpGet("http://verbshaker.webdad.eu/sync.php?t="+DICTIONARY_TABLE_NAME);
+		   HttpGet request = new HttpGet("http://verbshaker.webdad.eu/sync.php?t="+table);
 		   HttpResponse response = null;
 			try {
 				response = client.execute(request);
@@ -119,8 +122,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			InputStreamReader inputStreamReader = new InputStreamReader(in);
 		    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		    String line;
-		    Log.i("Sync", "Truncating "+DICTIONARY_TABLE_NAME);
-			d.execSQL("DELETE FROM "+DICTIONARY_TABLE_NAME);
+		    Log.i("Sync", "Truncating "+table);
+			d.execSQL("DELETE FROM "+table);
 		    try{
 		    while ((line = bufferedReader.readLine()) != null) {
 		        String[] tmp = line.split("\\|");
@@ -128,13 +131,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		        c.put("front", tmp[0]);
 		        c.put("back", tmp[1]);
 		        try{
-		        d.insert(DICTIONARY_TABLE_NAME, null, c);
-		        Log.i("DB","INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
+		        d.insert(table, null, c);
+		        Log.i("DB","INSERT INTO "+table+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
 		        }
 		        catch(SQLException se){
 		        	Log.e("DB",se.getMessage());
 		        }
-		        Log.i("Sync","INSERT INTO "+DICTIONARY_TABLE_NAME+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
+		        Log.i("Sync","INSERT INTO "+table+" (front, back) VALUES ('"+tmp[0]+"', '"+tmp[1]+"')");
 		    }
 		    bufferedReader.close();
 		    inputStreamReader.close();
@@ -149,12 +152,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return true;
 	}
 	
-	public String getProVerb(){
+	public Boolean Sync(){ //TODO: Correct Error Management...
+		Boolean c = true;
+		c = Sync(TABLE_NAME_DE);
+		c = Sync(TABLE_NAME_EN);
+		return c;
+	}
+	
+	public String getProVerb(String language){
 		String r = "";
+		String table="verbs_de";
+		if(language=="de")table="verbs_de";
+		if(language=="en")table="verbs_en";
 		try{
 		SQLiteDatabase d = this.getWritableDatabase();
-		Cursor rf = d.rawQuery("SELECT front FROM "+DICTIONARY_TABLE_NAME+" ORDER BY RANDOM() ASC LIMIT 1", null);
-		Cursor rb = d.rawQuery("SELECT back FROM "+DICTIONARY_TABLE_NAME+" ORDER BY RANDOM() ASC LIMIT 1", null);
+		Cursor rf = d.rawQuery("SELECT front FROM "+table+" ORDER BY RANDOM() ASC LIMIT 1", null);
+		Cursor rb = d.rawQuery("SELECT back FROM "+table+" ORDER BY RANDOM() ASC LIMIT 1", null);
 		
 		rf.moveToFirst();
 		rb.moveToFirst();

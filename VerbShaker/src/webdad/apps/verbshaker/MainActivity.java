@@ -1,14 +1,11 @@
 package webdad.apps.verbshaker;
 
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -60,8 +57,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		sync_onstart = sharedPref.getBoolean("pref_sync_onstart",sharedPref.getBoolean("pref_sync_onstart_default", true));
 		language = sharedPref.getString("pref_language",sharedPref.getString("pref_language_default", getResources().getConfiguration().locale.getDisplayName()));
-		setLanguage(language);
-		
+
 		db = new DataBaseHelper(getApplicationContext());
 		
 
@@ -70,7 +66,6 @@ public class MainActivity extends Activity implements SensorEventListener{
 		db.CreateMe();
 		
 		txt_m = (TextView)findViewById(R.id.txt_mixed);
-		getApplicationContext();
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
 		    mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -191,7 +186,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	        		Log.e("Menu", e.getMessage());
 	        	}
 	            return true;
-	        default:
+	        default: //TODO: Add About Activity here..
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
@@ -201,16 +196,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 	     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 	 }
 	
-	private void setLanguage(String lang){
-		Locale locale = new Locale(lang);
-		Locale.setDefault(locale);
-		Configuration config = new Configuration();
-		config.locale = locale;
-		getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-	}
-	
 	public void getMix(){
-		txt_m.setText(db.getProVerb());
+		txt_m.setText(db.getProVerb(language));
 	}
 	
 	private void sync(){
