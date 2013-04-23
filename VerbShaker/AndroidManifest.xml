@@ -38,6 +38,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="webdad.apps.verbshaker.MainActivity" />
         </activity>
+        <activity
+            android:name="webdad.apps.verbshaker.AboutActivity"
+            android:label="Entwickler"
+            android:parentActivityName="webdad.apps.verbshaker.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="webdad.apps.verbshaker.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

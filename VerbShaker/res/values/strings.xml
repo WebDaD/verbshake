@@ -7,12 +7,12 @@
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_sync">Jetzt Syncen</string>
     <string name="menu_share">Teilen</string>
-    
+    <string name="menu_about">Über</string>
     <string name="pref_sync_onstart_title">Sync beim Start</string>
     <string name="pref_sync_onstart_summ">Beim Starten der App mit dem Server Syncen</string>
     <string name="pref_sync_onstart_default">true</string>
-    
     <string name="pref_language_title">Sprache</string>
+
     <string-array name="pref_language_entries">
         <item>Deutsch</item>
         <item>Englisch</item>
@@ -21,10 +21,10 @@
         <item>de</item>
         <item>en</item>
     </string-array>
+
     <string name="pref_language_default">de</string>
-    
-	<string name="db_table">verbs_de</string>
-    
-    
+    <string name="db_table">verbs_de</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 </resources>

@@ -186,7 +186,19 @@ public class MainActivity extends Activity implements SensorEventListener{
 	        		Log.e("Menu", e.getMessage());
 	        	}
 	            return true;
-	        default: //TODO: Add About Activity here..
+	        case R.id.menu_about:
+	        	try
+	        	{
+	        	Intent in = new Intent(MainActivity.this, AboutActivity.class);
+	        	MainActivity.this.startActivity(in);
+	        	}
+	        	catch(Exception e)
+	        	{
+	        	Log.e("Menu", e.getMessage());
+	        	}
+	        	
+	            return true;
+	        default: 
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
