@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -23,7 +24,7 @@ import android.view.View;
 import android.widget.TextView;
 
 @SuppressLint("HandlerLeak")
-public class MainActivity extends Activity implements SensorEventListener{
+public class MainActivity extends Activity implements SensorEventListener {
 
 	public DataBaseHelper db;
 	public TextView txt_m;
@@ -42,6 +43,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	
 	private Vibrator vib;
 	private Boolean vib_ok;
+	private OnSharedPreferenceChangeListener listener;
 	
 	
 
@@ -89,6 +91,13 @@ public class MainActivity extends Activity implements SensorEventListener{
 			sync();
 		}
 		
+		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+			  public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+			   language = prefs.getString("pref_language",prefs.getString("pref_language_default", getResources().getConfiguration().locale.getDisplayName()));
+			   Log.d("Language","Main: Set lang to "+language); //TODO: Never called!!!
+			  }
+			};
+		
 		Log.i("App", "Ready!");
 	}
 	
@@ -106,6 +115,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	protected void onResume(){
 		super.onResume();
 		if(sensor_ok){ mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);}
+		PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(listener);
 	}
 	
 	//resumed (visible)
@@ -153,7 +163,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	        	try
 	        	{
 	        	Intent in = new Intent(MainActivity.this, SettingsActivity.class);
-	        	MainActivity.this.startActivity(in);
+	        	startActivity(in);
 	        	}
 	        	catch(Exception e)
 	        	{
@@ -203,13 +213,16 @@ public class MainActivity extends Activity implements SensorEventListener{
 	    }
 	}
 	
+	
 	public void btn_getNewMix_onclick(View view) {
 	     getMix();
 	     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 	 }
 	
 	public void getMix(){
+		Log.d("Mix","Get Mix for Language "+language);
 		txt_m.setText(db.getProVerb(language));
+		Log.d("Mix","Mix is  "+txt_m.getText());
 	}
 	
 	private void sync(){
@@ -279,4 +292,6 @@ public class MainActivity extends Activity implements SensorEventListener{
 		    }
 		}
 	}
+
+
 }

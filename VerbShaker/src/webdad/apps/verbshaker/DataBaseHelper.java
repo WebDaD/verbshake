@@ -162,8 +162,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public String getProVerb(String language){
 		String r = "";
 		String table="verbs_de";
-		if(language=="de")table="verbs_de";
-		if(language=="en")table="verbs_en";
+		if(language.equals("de"))table="verbs_de";
+		if(language.equals("en"))table="verbs_en";
 		try{
 		SQLiteDatabase d = this.getWritableDatabase();
 		Cursor rf = d.rawQuery("SELECT front FROM "+table+" ORDER BY RANDOM() ASC LIMIT 1", null);

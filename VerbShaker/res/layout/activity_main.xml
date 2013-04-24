@@ -6,19 +6,6 @@
     android:clickable="true"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/btn_getNewMix"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:onClick="btn_getNewMix_onclick"
-        android:text="@string/btn_getMix_Text"
-        android:textColor="#009a00"
-        android:textStyle="bold" />
-
     <TextView
         android:id="@+id/txt_mixed"
         android:layout_width="wrap_content"
