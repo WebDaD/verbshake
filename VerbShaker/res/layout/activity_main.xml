@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:onClick="btn_getNewMix_onclick"
     android:clickable="true"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity" xmlns:app="http://schemas.android.com/apk/lib/com.google.ads">
 
     <TextView
         android:id="@+id/txt_mixed"
@@ -20,4 +20,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#009a00" />
 
+<com.google.ads.AdView
+    xmlns:googleads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:id="@+id/ad"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:gravity="bottom"
+    app:adSize="BANNER"
+    app:adUnitId="@string/admob_id" >
+
+</com.google.ads.AdView>
+    
 </RelativeLayout>

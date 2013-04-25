@@ -23,6 +23,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
+
 @SuppressLint("HandlerLeak")
 public class MainActivity extends Activity implements SensorEventListener {
 
@@ -44,6 +47,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	private Vibrator vib;
 	private Boolean vib_ok;
 	private OnSharedPreferenceChangeListener listener;
+	private AdView mAdView;
 	
 	
 
@@ -98,6 +102,14 @@ public class MainActivity extends Activity implements SensorEventListener {
 			  }
 			};
 		
+		mAdView = (AdView) findViewById(R.id.ad);
+	    mAdView.setAdListener(new MyAdListener());
+	
+		AdRequest adRequest = new AdRequest();
+	    adRequest.addKeyword("proverbs fun");
+	    mAdView.loadAd(adRequest);
+
+		    
 		Log.i("App", "Ready!");
 	}
 	
