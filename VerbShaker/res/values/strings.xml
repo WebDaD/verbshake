@@ -23,6 +23,11 @@
     </string-array>
 
     <string name="pref_language_default">de</string>
+    
+    <string name="pref_t2s_title">Text2Speech</string>
+    <string name="pref_t2s_summ">Die Sprüche vorlesen lassen</string>
+    <string name="pref_t2s_default">true</string>
+    
     <string name="db_table">verbs_de</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_about">AboutActivity</string>

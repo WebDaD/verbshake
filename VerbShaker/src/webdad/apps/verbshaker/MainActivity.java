@@ -1,5 +1,7 @@
 package webdad.apps.verbshaker;
 
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -16,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
@@ -34,6 +37,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	private ProgressDialog pd;
 	
 	private Boolean sync_onstart;
+	private Boolean t2s;
 	private String language;
 	
 	private SensorManager mSensorManager;
@@ -49,7 +53,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 	private OnSharedPreferenceChangeListener listener;
 	private AdView mAdView;
 	
-	
+	private TextToSpeech myT2S;
+
 
 	//IN
 	
@@ -62,8 +67,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		sync_onstart = sharedPref.getBoolean("pref_sync_onstart",sharedPref.getBoolean("pref_sync_onstart_default", true));
+		
 		language = sharedPref.getString("pref_language",sharedPref.getString("pref_language_default", getResources().getConfiguration().locale.getDisplayName()));
-
+		
+		t2s = sharedPref.getBoolean("pref_t2s",sharedPref.getBoolean("pref_t2s_default", true));
 		db = new DataBaseHelper(getApplicationContext());
 		
 
@@ -98,7 +105,14 @@ public class MainActivity extends Activity implements SensorEventListener {
 		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 			  public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 			   language = prefs.getString("pref_language",prefs.getString("pref_language_default", getResources().getConfiguration().locale.getDisplayName()));
-			   Log.d("Language","Main: Set lang to "+language); //TODO: Never called!!!
+			   Log.d("Language","Main: Set lang to "+language); 
+			   t2s = prefs.getBoolean("pref_t2s",prefs.getBoolean("pref_t2s_default", true));
+			   if(t2s)
+			   {
+			   if(language.equals("de")){myT2S.setLanguage(Locale.GERMAN);}
+			     else if (language.equals("en")){myT2S.setLanguage(Locale.ENGLISH);} 
+			     else {myT2S.setLanguage(Locale.GERMAN);}
+			   }
 			  }
 			};
 		
@@ -108,8 +122,17 @@ public class MainActivity extends Activity implements SensorEventListener {
 		AdRequest adRequest = new AdRequest();
 	    adRequest.addKeyword("proverbs fun");
 	    mAdView.loadAd(adRequest);
-
+	    
+	    myT2S = new TextToSpeech(this,null);
 		    
+	    if(t2s)
+	    {
+	    	 if(language.equals("de")){myT2S.setLanguage(Locale.GERMAN);}
+		     else if (language.equals("en")){myT2S.setLanguage(Locale.ENGLISH);} 
+		     else {myT2S.setLanguage(Locale.GERMAN);}
+	    	
+	    	 
+	    }
 		Log.i("App", "Ready!");
 	}
 	
@@ -143,6 +166,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	@Override
 	protected void onStop(){
 		super.onStop();
+		
 	}
 	
 	//stopped
@@ -150,6 +174,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	@Override
 	protected void onDestroy(){
 		db.close();
+		myT2S.shutdown();
 		super.onDestroy();
 	}
 	
@@ -235,6 +260,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 		Log.d("Mix","Get Mix for Language "+language);
 		txt_m.setText(db.getProVerb(language));
 		Log.d("Mix","Mix is  "+txt_m.getText());
+		if(t2s)
+		{
+			myT2S.speak((String) txt_m.getText(), TextToSpeech.QUEUE_FLUSH, null);
+			
+		}
 	}
 	
 	private void sync(){
@@ -264,7 +294,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Do Something for an Acc change
+		// Do Something for an Acc change
 		
 	}
 
