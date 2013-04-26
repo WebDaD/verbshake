@@ -29,9 +29,20 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentRight="true"
     android:gravity="bottom"
-    app:adSize="BANNER"
-    app:adUnitId="@string/admob_id" >
+    googleads:adSize="BANNER"
+    googleads:adUnitId="@string/admob_id" >
 
 </com.google.ads.AdView>
+
+<TextView
+    android:id="@+id/txt_adError"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/ad"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:gravity="bottom"
+    android:text=""
+    android:textAppearance="?android:attr/textAppearanceSmall" />
     
 </RelativeLayout>

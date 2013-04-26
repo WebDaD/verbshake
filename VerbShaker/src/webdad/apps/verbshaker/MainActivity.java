@@ -26,7 +26,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.ads.Ad;
+import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
+import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
 @SuppressLint("HandlerLeak")
@@ -34,6 +37,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 	public DataBaseHelper db;
 	public TextView txt_m;
+	public TextView txt_ad;
 	private ProgressDialog pd;
 	
 	private Boolean sync_onstart;
@@ -79,6 +83,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		db.CreateMe();
 		
 		txt_m = (TextView)findViewById(R.id.txt_mixed);
+		txt_ad = (TextView)findViewById(R.id.txt_adError);
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
 		    mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -265,6 +270,33 @@ public class MainActivity extends Activity implements SensorEventListener {
 			myT2S.speak((String) txt_m.getText(), TextToSpeech.QUEUE_FLUSH, null);
 			
 		}
+	}
+	
+	private class MyAdListener implements AdListener {
+
+		public void onDismissScreen(Ad arg0) {
+			
+		}
+
+		public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
+			txt_ad.setText("Error getting AD");
+			txt_ad.setVisibility(0);
+
+		}
+
+		public void onLeaveApplication(Ad arg0) {
+
+		}
+
+		public void onPresentScreen(Ad arg0) {
+
+		}
+
+		public void onReceiveAd(Ad arg0) {
+			txt_ad.setText("");
+			txt_ad.setVisibility(8);
+		}
+
 	}
 	
 	private void sync(){
