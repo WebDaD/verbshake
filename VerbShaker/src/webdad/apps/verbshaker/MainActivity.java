@@ -105,6 +105,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 		if(sync_onstart){
 			sync();
+			sync_onstart=false;
 		}
 		
 		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
