@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -105,7 +106,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 		if(sync_onstart){
 			sync();
-			sync_onstart=false;
 		}
 		
 		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -196,6 +196,13 @@ public class MainActivity extends Activity implements SensorEventListener {
 			Log.e("App",e.getMessage());
 		}
 		return true;
+	}
+	
+	//Layout change
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	  super.onConfigurationChanged(newConfig);
+
 	}
 	
 	@Override
@@ -304,6 +311,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		pd = ProgressDialog.show(MainActivity.this, "", "Syncing with Online DB", true, false);
 		SyncThread st = new SyncThread();
 	    st.start();
+	    st = null;
 	}
 	
 	private class SyncThread extends Thread {
