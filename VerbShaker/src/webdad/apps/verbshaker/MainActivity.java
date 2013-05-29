@@ -332,6 +332,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             @Override
             public void handleMessage(Message msg) {
                 pd.dismiss();
+                
             }
         };
     }
@@ -346,8 +347,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 			Log.i("Sensor",event.toString());
 	
 			long curTime = System.currentTimeMillis();
-		    // only allow one update every 100ms.
-		    if ((curTime - lastUpdate) > 100) {
+		    // only allow one update every 200ms.
+		    if ((curTime - lastUpdate) > 200) {
 		      long diffTime = (curTime - lastUpdate);
 		      lastUpdate = curTime;
 	

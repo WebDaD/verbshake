@@ -32,6 +32,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        Log.i("DB","Database object opened. VERSION:"+DATABASE_VERSION);
         myContext = context;
     }
 
@@ -40,14 +41,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     	Log.i("DB","Database is going to be created.");
         db.execSQL("CREATE TABLE "+TABLE_NAME_DE+" (id INT auto_increment, front TEXT, back TEXT)"); 
         db.execSQL("CREATE TABLE "+TABLE_NAME_EN+" (id INT auto_increment, front TEXT, back TEXT)"); 
+        db.execSQL("CREATE TABLE "+TABLE_NAME_ES+" (id INT auto_increment, front TEXT, back TEXT)"); 
         AssetManager mngr = myContext.getAssets();
         initialInsert(db, TABLE_NAME_DE, mngr);
         initialInsert(db, TABLE_NAME_EN, mngr);
+        initialInsert(db, TABLE_NAME_ES, mngr);
         //mngr.close();
     }
 
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+		Log.i("DB","Ran into upgrade scenario. OLD:"+arg1+" NEW:"+arg2);
 		if(arg2<arg1)return;
 		if(arg0.isReadOnly())return;
 		if(arg2==2){
@@ -55,12 +59,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			 AssetManager mngr = myContext.getAssets();
 		    initialInsert(arg0, TABLE_NAME_ES, mngr);
 		}
-		//TODO upgrade when we wrote an update and chaned DBVERSION(Arg2)
 	}
 	
 	public void CreateMe(){
 		try {
 		SQLiteDatabase d = this.getWritableDatabase();
+		Log.i("DB", "Opened Database. VERSION: "+d.getVersion());
 		d.close();
 		}
 		catch(Exception e){
