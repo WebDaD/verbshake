@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">VerbShaker</string>
+    <string name="starter">Hola.\n Empuja en cualquier parte de la pantalla o sacude tu móvil para obtener combinaciones!</string>
+    <string name="btn_getMix_Text">Sacudir!</string>
+    <string name="menu_settings">Ajustes</string>
+    <string name="menu_sync">Sincronizar ahora</string>
+    <string name="menu_share">Compartir</string>
+    <string name="menu_about">Informaciones</string>
+    <string name="pref_sync_onstart_title">Sincronizar al inicializar</string>
+    <string name="pref_sync_onstart_summ">Sincronizar con el servidor inicializando la aplicación</string>
+    <string name="pref_sync_onstart_default">true</string>
+    <string name="pref_language_title">Idioma</string>
+
+    <string-array name="pref_language_entries">
+        <item>alemán</item>
+        <item>inglés</item>
+        <item>español </item>
+    </string-array>
+    <string-array name="pref_language_values">
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+    </string-array>
+
+    <string name="pref_language_default">de</string>
+    
+    <string name="pref_t2s_title">Text2Speech</string>
+    <string name="pref_t2s_summ">Leer los refranes en voz alta.</string>
+    <string name="pref_t2s_default">true</string>
+    
+    <string name="db_table">verbs_es</string>
+    <string name="title_activity_about">Informaciones</string>
+
+    
+    <string name="admob_id">a1517a293fc50f1</string>
+</resources>
