@@ -23,6 +23,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         String slang = "";
         if(sel_lang.equals("de")){slang="Deutsch";}
         else if (sel_lang.equals("en")){slang="English";} 
+        else if (sel_lang.equals("es")){slang="Español";} 
         else {slang = "???";}
         
         lang.setSummary(slang);
@@ -34,6 +35,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		        String slang = "";
 		        if(sel_lang.equals("de")){slang="Deutsch";}
 		        else if (sel_lang.equals("en")){slang="English";} 
+		        else if (sel_lang.equals("es")){slang="Español";} 
 		        else {slang = "???";}
 		        Log.d("Language", "Settings: Set to  "+slang);
 		        lang.setSummary(slang);

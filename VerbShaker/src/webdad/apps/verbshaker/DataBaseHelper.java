@@ -22,9 +22,10 @@ import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
     private static String TABLE_NAME_DE = "verbs_de";
     private static String TABLE_NAME_EN = "verbs_en";
+    private static String TABLE_NAME_ES = "verbs_es";
 	private static final String DATABASE_NAME = "proverbs";
 
 	private Context myContext;
@@ -49,6 +50,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
 		if(arg2<arg1)return;
 		if(arg0.isReadOnly())return;
+		if(arg2==2){
+			 arg0.execSQL("CREATE TABLE "+TABLE_NAME_ES+" (id INT auto_increment, front TEXT, back TEXT)"); 
+			 AssetManager mngr = myContext.getAssets();
+		    initialInsert(arg0, TABLE_NAME_ES, mngr);
+		}
 		//TODO upgrade when we wrote an update and chaned DBVERSION(Arg2)
 	}
 	
@@ -156,6 +162,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		Boolean c = true;
 		c = Sync(TABLE_NAME_DE);
 		c = Sync(TABLE_NAME_EN);
+		c = Sync(TABLE_NAME_ES);
 		return c;
 	}
 	
@@ -164,6 +171,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		String table="verbs_de";
 		if(language.equals("de"))table="verbs_de";
 		if(language.equals("en"))table="verbs_en";
+		if(language.equals("es"))table="verbs_es";
 		try{
 		SQLiteDatabase d = this.getWritableDatabase();
 		Cursor rf = d.rawQuery("SELECT front FROM "+table+" ORDER BY RANDOM() ASC LIMIT 1", null);

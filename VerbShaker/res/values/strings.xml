@@ -16,10 +16,12 @@
     <string-array name="pref_language_entries">
         <item>Deutsch</item>
         <item>Englisch</item>
+        <item>Spanisch</item>
     </string-array>
     <string-array name="pref_language_values">
         <item>de</item>
         <item>en</item>
+        <item>es</item>
     </string-array>
 
     <string name="pref_language_default">de</string>
@@ -29,8 +31,8 @@
     <string name="pref_t2s_default">true</string>
     
     <string name="db_table">verbs_de</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_about">AboutActivity</string>
+
+    <string name="title_activity_about">Über</string>
 
     
     <string name="admob_id">a1517a293fc50f1</string>

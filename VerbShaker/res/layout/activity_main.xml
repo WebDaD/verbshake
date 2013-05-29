@@ -12,12 +12,12 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:clickable="true"
         android:freezesText="true"
         android:gravity="center"
-        android:text="@string/starter"
         android:onClick="btn_getNewMix_onclick"
-		android:clickable="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/starter"
+        android:textAppearance="?android:attr/textAppearanceLargeInverse"
         android:textColor="#009a00" />
 
 <com.google.ads.AdView
@@ -28,7 +28,7 @@
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentRight="true"
-    android:gravity="bottom"
+    android:gravity="bottom|center_horizontal"
     googleads:adSize="BANNER"
     googleads:adUnitId="@string/admob_id" >
 

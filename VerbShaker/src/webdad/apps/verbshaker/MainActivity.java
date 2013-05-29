@@ -117,6 +117,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 			   {
 			   if(language.equals("de")){myT2S.setLanguage(Locale.GERMAN);}
 			     else if (language.equals("en")){myT2S.setLanguage(Locale.ENGLISH);} 
+			     else if (language.equals("es")){myT2S.setLanguage(new Locale("spa", "ESP"));} 
 			     else {myT2S.setLanguage(Locale.GERMAN);}
 			   }
 			  }
@@ -135,6 +136,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	    {
 	    	 if(language.equals("de")){myT2S.setLanguage(Locale.GERMAN);}
 		     else if (language.equals("en")){myT2S.setLanguage(Locale.ENGLISH);} 
+		     else if (language.equals("es")){myT2S.setLanguage(new Locale("spa", "ESP"));} 
 		     else {myT2S.setLanguage(Locale.GERMAN);}
 	    	
 	    	 
