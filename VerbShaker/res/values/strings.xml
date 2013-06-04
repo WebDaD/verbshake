@@ -8,6 +8,7 @@
     <string name="menu_sync">Jetzt Syncen</string>
     <string name="menu_share">Teilen</string>
     <string name="menu_about">Über</string>
+    
     <string name="pref_sync_onstart_title">Sync beim Start</string>
     <string name="pref_sync_onstart_summ">Beim Starten der App mit dem Server Syncen</string>
     <string name="pref_sync_onstart_default">true</string>
@@ -29,6 +30,32 @@
     <string name="pref_t2s_title">Text2Speech</string>
     <string name="pref_t2s_summ">Die Sprüche vorlesen lassen</string>
     <string name="pref_t2s_default">true</string>
+    
+    <string name="pref_ws_title">WLAN-Sync</string>
+    <string name="pref_ws_summ">Nur bei WLAN-Verbindung syncen</string>
+    <string name="pref_ws_default">true</string>
+    
+    <string name="pref_font_size_title">Schriftgröße</string>
+    <string name="pref_font_size_summ">Größe der Schrift</string>
+    <string name="pref_font_size_default">30</string>
+    
+    <string name="pref_font_color_title">Schriftfarbe</string>
+    <string name="pref_font_color_summ">Farbe der Schrift</string>
+    <string name="pref_font_color_default">#009a00</string>
+    
+    <string-array name="pref_font_color_entries">
+        <item>Grün</item>
+        <item>Blau</item>
+        <item>Schwarz</item>
+        <item>Rot</item>
+    </string-array>
+    <string-array name="pref_font_color_values">
+        <item>#009a00</item>
+        <item>#0000FF</item>
+        <item>#000000</item>
+        <item>#FF0000</item>
+    </string-array>
+    
     
     <string name="db_table">verbs_de</string>
 

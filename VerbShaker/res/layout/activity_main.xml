@@ -18,7 +18,8 @@
         android:onClick="btn_getNewMix_onclick"
         android:text="@string/starter"
         android:textAppearance="?android:attr/textAppearanceLargeInverse"
-        android:textColor="#009a00" />
+        android:textColor="#009a00"
+        android:textSize="30sp" />
 
 <com.google.ads.AdView
     xmlns:googleads="http://schemas.android.com/apk/lib/com.google.ads"

@@ -3,13 +3,15 @@ package webdad.apps.verbshaker;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	private ListPreference lang;
+	private ListPreference color;
+	private EditTextPreference fsize;
 	public SharedPreferences sharedPref ;
 	@SuppressWarnings("deprecation")
 	@Override
@@ -18,29 +20,26 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
         sharedPref =  PreferenceManager.getDefaultSharedPreferences(this);
         addPreferencesFromResource(R.xml.preferences);
         lang = (ListPreference)getPreferenceScreen().findPreference("pref_language");
-        String sel_lang = sharedPref.getString("pref_language", getString(R.string.pref_language_default));
+        color = (ListPreference)getPreferenceScreen().findPreference("pref_font_color");
+        fsize = (EditTextPreference)getPreferenceScreen().findPreference("pref_font_size");
         
-        String slang = "";
-        if(sel_lang.equals("de")){slang="Deutsch";}
-        else if (sel_lang.equals("en")){slang="English";} 
-        else if (sel_lang.equals("es")){slang="Español";} 
-        else {slang = "???";}
+        lang.setSummary(lang.getEntry());
         
-        lang.setSummary(slang);
+        color.setSummary(color.getEntry());
+        
+
+        fsize.setSummary(sharedPref.getString("pref_font_size", getString(R.string.pref_font_size_default)));
     }
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		  if (key.equals("pref_language")) {
-			  String sel_lang = sharedPreferences.getString("pref_language", getString(R.string.pref_language_default));
-		        Log.d("Language", "Settings: Found "+sel_lang);
-		        String slang = "";
-		        if(sel_lang.equals("de")){slang="Deutsch";}
-		        else if (sel_lang.equals("en")){slang="English";} 
-		        else if (sel_lang.equals("es")){slang="Español";} 
-		        else {slang = "???";}
-		        Log.d("Language", "Settings: Set to  "+slang);
-		        lang.setSummary(slang);
+			 lang.setSummary(lang.getEntry());
 	        }
-
+		  else if (key.equals("pref_font_size")){
+			  fsize.setSummary(sharedPreferences.getString("pref_font_size", getString(R.string.pref_font_size_default)));
+		  }
+		  else if (key.equals("pref_font_color")){
+			  color.setSummary(color.getEntry());
+		  }
 		
 	}
 	

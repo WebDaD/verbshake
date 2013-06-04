@@ -6,6 +6,12 @@
         android:summary="@string/pref_sync_onstart_summ"
         android:defaultValue="@string/pref_sync_onstart_default" />
     
+    <CheckBoxPreference
+        android:key="pref_ws"
+        android:title="@string/pref_ws_title"
+        android:summary="@string/pref_ws_summ"
+        android:defaultValue="@string/pref_ws_default" />
+    
     <ListPreference
         android:key="pref_language"
         android:title="@string/pref_language_title"
@@ -20,4 +26,20 @@
         android:summary="@string/pref_t2s_summ"
         android:defaultValue="@string/pref_t2s_default" />
 
+    
+    <EditTextPreference
+        android:key="pref_font_size"
+        android:inputType="number"
+        android:title="@string/pref_font_size_title"
+        android:summary="@string/pref_font_size_summ"
+        android:defaultValue="@string/pref_font_size_default" />
+    
+    <ListPreference
+		android:key="pref_font_color"
+		android:title="@string/pref_font_color_title"
+		android:dialogTitle="@string/pref_font_color_title"
+        android:entries="@array/pref_font_color_entries"
+        android:entryValues="@array/pref_font_color_values"
+		android:defaultValue="@string/pref_font_color_default"/>
+    
 </PreferenceScreen>

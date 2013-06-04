@@ -10,10 +10,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +24,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,8 +46,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 	private ProgressDialog pd;
 	
 	private Boolean sync_onstart;
+	private Boolean sync_wlan_only;
 	private Boolean t2s;
 	private String language;
+	private String font_size;
+	private String font_color;
 	
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
@@ -60,7 +67,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	
 	private TextToSpeech myT2S;
 
-
+	private Locale ES;
 	//IN
 	
 	@Override
@@ -72,18 +79,37 @@ public class MainActivity extends Activity implements SensorEventListener {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		sync_onstart = sharedPref.getBoolean("pref_sync_onstart",sharedPref.getBoolean("pref_sync_onstart_default", true));
+		sync_wlan_only = sharedPref.getBoolean("pref_ws",sharedPref.getBoolean("pref_ws_default", true));
 		
 		language = sharedPref.getString("pref_language",sharedPref.getString("pref_language_default", getResources().getConfiguration().locale.getDisplayName()));
+		font_size = sharedPref.getString("pref_font_size",sharedPref.getString("pref_font_size_default", "30"));
+		font_color = sharedPref.getString("pref_font_color",sharedPref.getString("pref_font_color_default", "#009a00"));
+		
 		
 		t2s = sharedPref.getBoolean("pref_t2s",sharedPref.getBoolean("pref_t2s_default", true));
 		db = new DataBaseHelper(getApplicationContext());
 		
 
+		ES = new Locale("es","ES");
 		
 		Log.i("App", "Create DB if needed...");
 		db.CreateMe();
 		
 		txt_m = (TextView)findViewById(R.id.txt_mixed);
+		
+		Log.i("TXT", "Fontsize = "+font_size);
+		try{
+		txt_m.setTextSize(TypedValue.COMPLEX_UNIT_SP, Float.parseFloat(font_size));
+		}
+		catch(NumberFormatException e){
+			txt_m.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30.0f);
+		}
+		Log.i("TXT","Set textsize to "+txt_m.getTextSize());
+		
+		Log.i("TXT", "Font color = "+font_color);
+		txt_m.setTextColor(Color.parseColor(font_color));
+		Log.i("TXT"," Set fontcolor to "+txt_m.getTextColors().toString());
+		
 		txt_ad = (TextView)findViewById(R.id.txt_adError);
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
@@ -102,7 +128,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 			vib_ok=false;
 		}
 		
-			
+		myT2S = new TextToSpeech(this,null);
 
 		if(sync_onstart){
 			sync();
@@ -113,13 +139,31 @@ public class MainActivity extends Activity implements SensorEventListener {
 			   language = prefs.getString("pref_language",prefs.getString("pref_language_default", getResources().getConfiguration().locale.getDisplayName()));
 			   Log.d("Language","Main: Set lang to "+language); 
 			   t2s = prefs.getBoolean("pref_t2s",prefs.getBoolean("pref_t2s_default", true));
+			   sync_wlan_only = prefs.getBoolean("pref_ws",prefs.getBoolean("pref_ws_default", true));
 			   if(t2s)
 			   {
+				   Log.d("T2S", "T2S set to true");
 			   if(language.equals("de")){myT2S.setLanguage(Locale.GERMAN);}
 			     else if (language.equals("en")){myT2S.setLanguage(Locale.ENGLISH);} 
-			     else if (language.equals("es")){myT2S.setLanguage(new Locale("spa", "ESP"));} 
+			     else if (language.equals("es")){myT2S.setLanguage(ES);} 
 			     else {myT2S.setLanguage(Locale.GERMAN);}
+			   Log.d("T2S","Language of T2S set to "+myT2S.getLanguage());
 			   }
+			   font_size = prefs.getString("pref_font_size",prefs.getString("pref_font_size", "30"));
+
+			   try{
+					txt_m.setTextSize(TypedValue.COMPLEX_UNIT_SP, Float.parseFloat(font_size));
+					}
+					catch(NumberFormatException e){
+						txt_m.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30.0f);
+					}
+				Log.d("TXT","Set textsize to "+txt_m.getTextSize());
+				
+				font_color = prefs.getString("pref_font_color",prefs.getString("pref_font_color", "#009a00"));
+				
+				Log.d("TXT", "Font color = "+font_color);
+				txt_m.setTextColor(Color.parseColor(font_color));
+				Log.d("TXT"," Set fontcolor to "+txt_m.getTextColors().toString());
 			  }
 			};
 		
@@ -130,17 +174,9 @@ public class MainActivity extends Activity implements SensorEventListener {
 	    adRequest.addKeyword("proverbs fun");
 	    mAdView.loadAd(adRequest);
 	    
-	    myT2S = new TextToSpeech(this,null);
+	    
 		    
-	    if(t2s)
-	    {
-	    	 if(language.equals("de")){myT2S.setLanguage(Locale.GERMAN);}
-		     else if (language.equals("en")){myT2S.setLanguage(Locale.ENGLISH);} 
-		     else if (language.equals("es")){myT2S.setLanguage(new Locale("spa", "ESP"));} 
-		     else {myT2S.setLanguage(Locale.GERMAN);}
-	    	
-	    	 
-	    }
+	   
 		Log.i("App", "Ready!");
 	}
 	
@@ -149,7 +185,31 @@ public class MainActivity extends Activity implements SensorEventListener {
 	@Override
 	protected void onStart(){
 		super.onStart();
-		
+		 if(t2s)
+		    {
+		    	Log.i("T2S", "Language of App is "+language);
+		    	
+		    	
+		    	 if(language.equals("de")){myT2S.setLanguage(Locale.GERMAN);}
+			     else if (language.equals("en")){myT2S.setLanguage(Locale.ENGLISH);} 
+			     else if (language.equals("es"))
+			     {
+			    	 Log.i("T2S",myT2S.isLanguageAvailable(ES)+"");
+			    	 if(myT2S.isLanguageAvailable(ES) == TextToSpeech.LANG_COUNTRY_AVAILABLE){
+			    		 Log.i("T2S","Spanish is avaible");
+			    	 myT2S.setLanguage(ES);
+			    	 }
+			    	 else {
+			    		 Log.i("T2S","Spanish is NOT avaible");
+			    		 myT2S.setLanguage(Locale.ENGLISH);
+			    		 myT2S.speak("Spanish is not avaiable on your phone", TextToSpeech.QUEUE_FLUSH, null);
+			    		 t2s = false;
+			    	 }
+			     } 
+			     else {myT2S.setLanguage(Locale.GERMAN);}
+		    	
+		    	 Log.i("T2S","Language of T2S set to "+myT2S.getLanguage());
+		    }
 	}
 	
 	//started(visible)
@@ -159,6 +219,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 		super.onResume();
 		if(sensor_ok){ mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);}
 		PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(listener);
+
+		
 	}
 	
 	//resumed (visible)
@@ -321,8 +383,12 @@ public class MainActivity extends Activity implements SensorEventListener {
         }
 
         @Override
-        public void run() {         
-            db.Sync();
+        public void run() {   
+        	if(isNetworkAvailable()){
+        		if(sync_wlan_only && isWLANAvailable()){
+        			db.Sync();
+        		}
+        	}
             handler.sendEmptyMessage(0);
         }
 
@@ -336,7 +402,19 @@ public class MainActivity extends Activity implements SensorEventListener {
             }
         };
     }
-
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
+	private boolean isWLANAvailable() {
+		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+	    return mWifi != null && mWifi.isConnected();
+	}
+	
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// Do Something for an Acc change
 		

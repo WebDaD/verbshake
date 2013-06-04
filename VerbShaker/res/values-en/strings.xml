@@ -19,16 +19,43 @@
         <item>English</item>
         <item>Spanish</item>
     </string-array>
+    
     <string-array name="pref_language_values">
         <item>de</item>
         <item>en</item>
         <item>es</item>
     </string-array>
+    
     <string name="pref_language_default">en</string>
     
 	<string name="pref_t2s_title">Text2Speech</string>
     <string name="pref_t2s_summ">Read the Mixed Proverbs aloud</string>
     <string name="pref_t2s_default">true</string>
+    
+    <string name="pref_ws_title">WLAN-Sync</string>
+    <string name="pref_ws_summ">Sync only in WLAN</string>
+    <string name="pref_ws_default">true</string>
+    
+    <string name="pref_font_size_title">Fontsize</string>
+    <string name="pref_font_size_summ">Size of the Font</string>
+    <string name="pref_font_size_default">30</string>
+    
+    <string name="pref_font_color_title">FontColor</string>
+    <string name="pref_font_color_summ">Color fo the Font</string>
+    <string name="pref_font_color_default">#009a00</string>
+    
+    <string-array name="pref_font_color_entries">
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Black</item>
+        <item>Red</item>
+    </string-array>
+    <string-array name="pref_font_color_values">
+        <item>#009a00</item>
+        <item>#0000FF</item>
+        <item>#000000</item>
+        <item>#FF0000</item>
+    </string-array>
     
     <string name="db_table">verbs_en</string>
 
