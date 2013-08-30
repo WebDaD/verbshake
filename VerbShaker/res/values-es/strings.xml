@@ -16,13 +16,15 @@
     <string-array name="pref_language_entries">
         <item>alemán</item>
         <item>inglés</item>
-        <item>español </item>
+        <item>español</item>
+        <item>francés</item>
     </string-array>
     
     <string-array name="pref_language_values">
         <item>de</item>
         <item>en</item>
         <item>es</item>
+        <item>fr</item>
     </string-array>
 
     <string name="pref_language_default">de</string>
@@ -44,10 +46,10 @@
     <string name="pref_font_color_default">#009a00</string>
     
      <string-array name="pref_font_color_entries">
-        <item>Green</item>
-        <item>Blue</item>
-        <item>Black</item>
-        <item>Red</item>
+        <item>verde</item>
+        <item>azul</item>
+        <item>negro</item>
+        <item>rojo</item>
     </string-array>
     <string-array name="pref_font_color_values">
         <item>#009a00</item>

@@ -22,10 +22,11 @@ import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
     private static String TABLE_NAME_DE = "verbs_de";
     private static String TABLE_NAME_EN = "verbs_en";
     private static String TABLE_NAME_ES = "verbs_es";
+    private static String TABLE_NAME_FR = "verbs_fr";
 	private static final String DATABASE_NAME = "proverbs";
 
 	private Context myContext;
@@ -42,10 +43,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE "+TABLE_NAME_DE+" (id INT auto_increment, front TEXT, back TEXT)"); 
         db.execSQL("CREATE TABLE "+TABLE_NAME_EN+" (id INT auto_increment, front TEXT, back TEXT)"); 
         db.execSQL("CREATE TABLE "+TABLE_NAME_ES+" (id INT auto_increment, front TEXT, back TEXT)"); 
+        db.execSQL("CREATE TABLE "+TABLE_NAME_FR+" (id INT auto_increment, front TEXT, back TEXT)"); 
         AssetManager mngr = myContext.getAssets();
         initialInsert(db, TABLE_NAME_DE, mngr);
         initialInsert(db, TABLE_NAME_EN, mngr);
         initialInsert(db, TABLE_NAME_ES, mngr);
+        initialInsert(db, TABLE_NAME_FR, mngr);
         //mngr.close();
     }
 
@@ -58,6 +61,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			 arg0.execSQL("CREATE TABLE "+TABLE_NAME_ES+" (id INT auto_increment, front TEXT, back TEXT)"); 
 			 AssetManager mngr = myContext.getAssets();
 		    initialInsert(arg0, TABLE_NAME_ES, mngr);
+		}
+		if(arg2==3){
+			 arg0.execSQL("CREATE TABLE "+TABLE_NAME_FR+" (id INT auto_increment, front TEXT, back TEXT)"); 
+			 AssetManager mngr = myContext.getAssets();
+		    initialInsert(arg0, TABLE_NAME_FR, mngr);
 		}
 	}
 	
@@ -167,6 +175,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		c = Sync(TABLE_NAME_DE);
 		c = Sync(TABLE_NAME_EN);
 		c = Sync(TABLE_NAME_ES);
+		c = Sync(TABLE_NAME_FR);
 		return c;
 	}
 	
@@ -176,6 +185,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		if(language.equals("de"))table="verbs_de";
 		if(language.equals("en"))table="verbs_en";
 		if(language.equals("es"))table="verbs_es";
+		if(language.equals("fr"))table="verbs_fr";
 		try{
 		SQLiteDatabase d = this.getWritableDatabase();
 		Cursor rf = d.rawQuery("SELECT front FROM "+table+" ORDER BY RANDOM() ASC LIMIT 1", null);

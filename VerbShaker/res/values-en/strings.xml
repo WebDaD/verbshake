@@ -18,12 +18,14 @@
         <item>German</item>
         <item>English</item>
         <item>Spanish</item>
+        <item>Frensh</item>
     </string-array>
     
     <string-array name="pref_language_values">
         <item>de</item>
         <item>en</item>
         <item>es</item>
+        <item>fr</item>
     </string-array>
     
     <string name="pref_language_default">en</string>
