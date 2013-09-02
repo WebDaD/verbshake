@@ -2,23 +2,23 @@
 <resources>
 
     <string name="app_name">VerbShaker</string>
-    <string name="starter">Willkommen.\nDrücke irgendwo auf dem Bildschirm oder schüttel dein Smartphone für Kombinationen!</string>
-    <string name="btn_getMix_Text">Shake!</string>
-    <string name="menu_settings">Einstellungen</string>
-    <string name="menu_sync">Jetzt Syncen</string>
-    <string name="menu_share">Teilen</string>
-    <string name="menu_about">Über</string>
+    <string name="starter">Salut.\n Appuie n’importe où sur l’écran ou secoue ton portable pour obtenir des combinaisons.</string>
+    <string name="btn_getMix_Text">Secouer!</string>
+    <string name="menu_settings">Calibrage</string>
+    <string name="menu_sync">Synchroniser maintenant</string>
+    <string name="menu_share">Partager</string>
+    <string name="menu_about">Informations</string>
     
-    <string name="pref_sync_onstart_title">Sync beim Start</string>
-    <string name="pref_sync_onstart_summ">Beim Starten der App mit dem Server Syncen</string>
+    <string name="pref_sync_onstart_title">Synchroniser à l’initialisation</string>
+    <string name="pref_sync_onstart_summ">Synchroniser avec le serveur en initialisant l’application</string>
     <string name="pref_sync_onstart_default">true</string>
-    <string name="pref_language_title">Sprache</string>
+    <string name="pref_language_title">Langue</string>
 
     <string-array name="pref_language_entries">
-        <item>Deutsch</item>
-        <item>Englisch</item>
-        <item>Spanisch</item>
-        <item>Französisch</item>
+        <item>allemand</item>
+        <item>anglais</item>
+        <item>espagnol</item>
+        <item>français</item>
     </string-array>
     <string-array name="pref_language_values">
         <item>de</item>
@@ -27,29 +27,29 @@
         <item>fr</item>
     </string-array>
 
-    <string name="pref_language_default">de</string>
+    <string name="pref_language_default">fr</string>
     
     <string name="pref_t2s_title">Text2Speech</string>
-    <string name="pref_t2s_summ">Die Sprüche vorlesen lassen</string>
+    <string name="pref_t2s_summ">Lire les proverbes à haute voix.</string>
     <string name="pref_t2s_default">true</string>
     
     <string name="pref_ws_title">WLAN-Sync</string>
-    <string name="pref_ws_summ">Nur bei WLAN-Verbindung syncen</string>
+    <string name="pref_ws_summ">synchroniser seulement quand il y a du réseau sans fil</string>
     <string name="pref_ws_default">true</string>
     
-    <string name="pref_font_size_title">Schriftgröße</string>
-    <string name="pref_font_size_summ">Größe der Schrift</string>
+    <string name="pref_font_size_title">taille de fonte</string>
+    <string name="pref_font_size_summ">taille de fonte</string>
     <string name="pref_font_size_default">30</string>
     
-    <string name="pref_font_color_title">Schriftfarbe</string>
-    <string name="pref_font_color_summ">Farbe der Schrift</string>
+    <string name="pref_font_color_title">couleur de fonte</string>
+    <string name="pref_font_color_summ">couleur de fonte</string>
     <string name="pref_font_color_default">#009a00</string>
     
     <string-array name="pref_font_color_entries">
-        <item>Grün</item>
-        <item>Blau</item>
-        <item>Schwarz</item>
-        <item>Rot</item>
+        <item>vert</item>
+        <item>bleu</item>
+        <item>noir</item>
+        <item>rouge</item>
     </string-array>
     <string-array name="pref_font_color_values">
         <item>#009a00</item>
