@@ -116,7 +116,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 		   Log.i("Sync", "Getting HTTP");
 		   HttpClient client = new DefaultHttpClient();
-		   HttpGet request = new HttpGet("http://verbshaker.webdad.eu/sync.php?t="+table);
+		   HttpGet request = new HttpGet("http://games.webdad.eu/verbshaker/sync.php?t="+table);
 		   HttpResponse response = null;
 			try {
 				response = client.execute(request);
